@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListCell?>
+<?import javafx.scene.layout.HBox?>
+<fx:root xmlns:fx="http://javafx.com/fxml"
+         type="javafx.scene.control.ListCell"
+         xmlns="http://javafx.com/javafx"
+         fx:controller="com.encrypted.chat.message.list.item.MessageListItemController"
+         wrapText="true">
+    <graphic>
+        <HBox fx:id="messageBox">
+            <Label fx:id="messageText" wrapText="true"/>
+        </HBox>
+    </graphic>
+</fx:root>
