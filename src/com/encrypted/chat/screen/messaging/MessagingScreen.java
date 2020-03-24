@@ -1,12 +1,16 @@
 package com.encrypted.chat.screen.messaging;
 
+import com.encrypted.chat.screen.Presenter;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
 
 public class MessagingScreen extends BorderPane {
-    public MessagingScreen() {
+    private Presenter presenter;
+
+    public MessagingScreen(Presenter presenter) {
+        this.presenter = presenter;
         loadFxml();
     }
 
@@ -16,6 +20,8 @@ public class MessagingScreen extends BorderPane {
 
         try {
             loader.load();
+            MessagingScreenController controller = loader.getController();
+            controller.setPresenter(presenter);
         } catch (IOException ex) {
             System.out.println(ex.toString());
         }

@@ -1,11 +1,9 @@
 package com.encrypted.chat.screen.loading;
 
-import com.encrypted.chat.screen.messaging.MessagingScreen;
+import com.encrypted.chat.screen.Presenter;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
 import java.util.regex.Pattern;
 
@@ -14,6 +12,12 @@ public class LoadingScreenController {
     public TextField clientIp;
     @FXML
     public Label errorIp;
+
+    private Presenter presenter;
+
+    void setPresenter(Presenter presenter) {
+        this.presenter = presenter;
+    }
 
     @FXML
     public void connectToClient() {
@@ -26,12 +30,7 @@ public class LoadingScreenController {
             errorIp.setText("This IP is not correct.");
         } else {
             errorIp.setText("");
-            loadMainScene();
+            presenter.showMessagingScreen();
         }
-    }
-
-    private void loadMainScene() {
-        Stage rootStage = (Stage) clientIp.getScene().getWindow();
-        rootStage.setScene(new Scene(new MessagingScreen(), 800, 600));
     }
 }
