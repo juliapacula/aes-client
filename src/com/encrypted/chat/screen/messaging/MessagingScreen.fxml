@@ -6,33 +6,25 @@
 <fx:root xmlns:fx="http://javafx.com/fxml" type="BorderPane">
     <top>
         <MenuBar>
-            <menus>
-                <Menu text="File">
-                    <items>
-                        <MenuItem text="New"/>
-                        <MenuItem text="Open"/>
-                        <MenuItem text="Save"/>
-                        <MenuItem text="Save As"/>
-                        <SeparatorMenuItem/>
-                        <MenuItem text="Exit"/>
-                    </items>
-                </Menu>
-                <Menu text="Edit">
-                    <items>
-                        <MenuItem text="Copy"/>
-                        <MenuItem text="Cut"/>
-                        <MenuItem text="Paste"/>
-                    </items>
-                </Menu>
-                <Menu text="Help">
-                    <items>
-                        <MenuItem text="Search" disable="true"/>
-                        <MenuItem text="Online Manual" visible="false"/>
-                        <SeparatorMenuItem/>
-                        <MenuItem text="About"/>
-                    </items>
-                </Menu>
-            </menus>
+            <Menu text="File">
+                <MenuItem text="New"/>
+                <MenuItem text="Open"/>
+                <MenuItem text="Save"/>
+                <MenuItem text="Save As"/>
+                <SeparatorMenuItem/>
+                <MenuItem text="Exit"/>
+            </Menu>
+            <Menu text="Edit">
+                <MenuItem text="Copy"/>
+                <MenuItem text="Cut"/>
+                <MenuItem text="Paste"/>
+            </Menu>
+            <Menu text="Help">
+                <MenuItem text="Search" disable="true"/>
+                <MenuItem text="Online Manual" visible="false"/>
+                <SeparatorMenuItem/>
+                <MenuItem text="About"/>
+            </Menu>
         </MenuBar>
     </top>
     <center>
