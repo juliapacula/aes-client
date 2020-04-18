@@ -11,7 +11,7 @@ public class MessageSender extends HBox {
     }
 
     private void loadFxml() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("MessageSender.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/MessageSender.fxml"));
         loader.setRoot(this);
 
         try {

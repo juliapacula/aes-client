@@ -1,7 +1,6 @@
 package com.encrypted.chat.message.list;
 
 import com.encrypted.chat.message.Message;
-import com.encrypted.chat.message.list.item.MessageListItemFactory;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListView;
 
@@ -13,7 +12,7 @@ public class MessageList extends ListView<Message> {
     }
 
     private void loadFxml() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("MessageList.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/MessageList.fxml"));
         loader.setRoot(this);
 
         try {

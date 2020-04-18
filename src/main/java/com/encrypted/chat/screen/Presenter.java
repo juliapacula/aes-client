@@ -20,7 +20,7 @@ public class Presenter {
     }
 
     public void showLoadingScreen() {
-        primaryStage.setScene(new Scene(new LoadingScreen(this), 200, 200));
+        primaryStage.setScene(new Scene(new LoadingScreen(this), 400, 200));
         primaryStage.show();
     }
 

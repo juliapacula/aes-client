@@ -23,7 +23,7 @@ public class MessageListItem extends ListCell<Message> {
     }
 
     private void loadFxml() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("MessageListItem.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/MessageListItem.fxml"));
         loader.setRoot(this);
 
         try {
