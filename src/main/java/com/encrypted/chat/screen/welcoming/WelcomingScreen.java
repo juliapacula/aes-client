@@ -1,4 +1,4 @@
-package com.encrypted.chat.screen.loading;
+package com.encrypted.chat.screen.welcoming;
 
 import com.encrypted.chat.screen.Presenter;
 import javafx.fxml.FXMLLoader;
@@ -6,21 +6,21 @@ import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
 
-public class LoadingScreen extends GridPane {
+public class WelcomingScreen extends GridPane {
     private Presenter presenter;
 
-    public LoadingScreen(Presenter presenter) {
+    public WelcomingScreen(Presenter presenter) {
         this.presenter = presenter;
         loadFxml();
     }
 
     private void loadFxml() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/LoadingScreen.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/WelcomingScreen.fxml"));
         loader.setRoot(this);
 
         try {
             loader.load();
-            LoadingScreenController controller = loader.getController();
+            WelcomingScreenController controller = loader.getController();
             controller.setPresenter(presenter);
         } catch (IOException ex) {
             System.out.println(ex.toString());

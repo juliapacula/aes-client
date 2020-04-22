@@ -11,7 +11,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         Presenter presenter = new Presenter(primaryStage);
         presenter.startListeningForConnection();
-        presenter.showLoadingScreen();
+        presenter.showWelcomingScreen();
     }
 
 

@@ -1,41 +1,43 @@
 package com.encrypted.chat.screen;
 
-import com.encrypted.chat.Main;
-import com.encrypted.chat.communication.ReceiveConnectedSocketService;
-import com.encrypted.chat.screen.loading.LoadingScreen;
+import com.encrypted.chat.communication.ConnectionManager;
+import com.encrypted.chat.screen.welcoming.WelcomingScreen;
 import com.encrypted.chat.screen.messaging.MessagingScreen;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.net.Socket;
+import java.io.IOException;
 
-public class Presenter {
+public class Presenter implements Router {
     private Stage primaryStage;
-    private Socket clientSocket;
-    private ReceiveConnectedSocketService receiveMessageService;
+    private ConnectionManager connectionManager;
 
     public Presenter(Stage primaryStage) {
         this.primaryStage = primaryStage;
         primaryStage.setTitle("Encrypting App");
+        connectionManager = new ConnectionManager();
     }
 
-    public void showLoadingScreen() {
-        primaryStage.setScene(new Scene(new LoadingScreen(this), 400, 200));
+    public void showWelcomingScreen() {
+        primaryStage.setScene(new Scene(new WelcomingScreen(this), 400, 400));
         primaryStage.show();
     }
 
-    public void showMessagingScreen() {
-        receiveMessageService.cancel();
-        primaryStage.setScene(new Scene(new MessagingScreen(this), 800, 600));
-        primaryStage.show();
+    public void connectToClient(String clientIp) {
+        try {
+            connectionManager.connectToClient(clientIp);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        showMessagingScreen();
     }
 
     public void startListeningForConnection() {
-        receiveMessageService = new ReceiveConnectedSocketService(Main.isDev ? 1234 : 4040);
-        receiveMessageService.setOnSucceeded(event -> {
-            clientSocket = (Socket) event.getSource().getValue();
-            showMessagingScreen();
-        });
-        receiveMessageService.start();
+        connectionManager.listenForConnections(this);
+    }
+
+    public void showMessagingScreen() {
+        primaryStage.setScene(new Scene(new MessagingScreen(this), 800, 600));
+        primaryStage.show();
     }
 }

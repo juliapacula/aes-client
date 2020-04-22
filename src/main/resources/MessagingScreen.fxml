@@ -1,39 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
 <?import com.encrypted.chat.message.list.MessageList?>
 <?import com.encrypted.chat.message.sender.MessageSender?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.layout.BorderPane?>
-<fx:root xmlns:fx="http://javafx.com/fxml" type="BorderPane">
+
+<fx:root type="BorderPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.999-ea" fx:controller="com.encrypted.chat.screen.messaging.MessagingScreenController">
     <top>
-        <MenuBar>
+        <MenuBar style="-fx-background-color: #e3f2fd;">
             <Menu text="File">
-                <MenuItem text="New"/>
-                <MenuItem text="Open"/>
-                <MenuItem text="Save"/>
-                <MenuItem text="Save As"/>
-                <SeparatorMenuItem/>
-                <MenuItem text="Exit"/>
+                <MenuItem text="New" />
+                <MenuItem text="Open" />
+                <MenuItem text="Save" />
+                <MenuItem text="Save As" />
+                <SeparatorMenuItem />
+                <MenuItem text="Exit" />
             </Menu>
             <Menu text="Edit">
-                <MenuItem text="Copy"/>
-                <MenuItem text="Cut"/>
-                <MenuItem text="Paste"/>
+                <MenuItem text="Copy" />
+                <MenuItem text="Cut" />
+                <MenuItem text="Paste" />
             </Menu>
             <Menu text="Help">
-                <MenuItem text="Search" disable="true"/>
-                <MenuItem text="Online Manual" visible="false"/>
-                <SeparatorMenuItem/>
-                <MenuItem text="About"/>
+                <MenuItem disable="true" text="Search" />
+                <MenuItem text="Online Manual" visible="false" />
+                <SeparatorMenuItem />
+                <MenuItem text="About" />
             </Menu>
         </MenuBar>
     </top>
     <center>
-        <MessageList/>
+        <MessageList fx:id="messageList" />
     </center>
     <bottom>
-        <MessageSender>
+        <MessageSender fx:id="messageSender">
             <padding>
-                <Insets top="10" bottom="10" left="10" right="10"/>
+                <Insets bottom="10" left="10" right="10" top="10" />
             </padding>
         </MessageSender>
     </bottom>
