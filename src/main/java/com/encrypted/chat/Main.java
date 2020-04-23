@@ -9,9 +9,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        Presenter presenter = new Presenter(primaryStage);
-        presenter.startListeningForConnection();
-        presenter.showWelcomingScreen();
+        new Presenter(primaryStage);
     }
 
 

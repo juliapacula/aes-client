@@ -1,43 +1,55 @@
 package com.encrypted.chat.screen;
 
 import com.encrypted.chat.communication.ConnectionManager;
-import com.encrypted.chat.screen.welcoming.WelcomingScreen;
-import com.encrypted.chat.screen.messaging.MessagingScreen;
-import javafx.scene.Scene;
+import com.encrypted.chat.communication.ExternalMessage;
+import com.encrypted.chat.communication.ExternalMessageType;
+import com.encrypted.chat.message.Message;
+import com.encrypted.chat.screen.state.Reducer;
+import com.encrypted.chat.screen.state.Store;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class Presenter implements Router {
-    private Stage primaryStage;
+public class Presenter {
     private ConnectionManager connectionManager;
+    private Reducer reducer;
+    private Store store;
+    private Router router;
 
     public Presenter(Stage primaryStage) {
-        this.primaryStage = primaryStage;
-        primaryStage.setTitle("Encrypting App");
-        connectionManager = new ConnectionManager();
-    }
+        router = new Router(primaryStage, this);
+        store = new Store();
+        reducer = new Reducer(store);
+        connectionManager = new ConnectionManager(reducer, router);
 
-    public void showWelcomingScreen() {
-        primaryStage.setScene(new Scene(new WelcomingScreen(this), 400, 400));
-        primaryStage.show();
+        initialActions();
     }
 
     public void connectToClient(String clientIp) {
         try {
             connectionManager.connectToClient(clientIp);
+            router.showMessagingScreen();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        showMessagingScreen();
     }
 
-    public void startListeningForConnection() {
-        connectionManager.listenForConnections(this);
+    public void sendMessage(String message) {
+        ExternalMessage externalMessage = new ExternalMessage(ExternalMessageType.TEXT_MESSAGE, message.getBytes());
+        connectionManager.sendMessage(externalMessage);
+        reducer.addSelfMessage(message);
     }
 
-    public void showMessagingScreen() {
-        primaryStage.setScene(new Scene(new MessagingScreen(this), 800, 600));
-        primaryStage.show();
+    public Reducer getReducer() {
+        return reducer;
+    }
+
+    public Store getStore() {
+        return store;
+    }
+
+    private void initialActions() {
+        connectionManager.listenForConnections(router);
+        connectionManager.listenForMessages(reducer);
     }
 }

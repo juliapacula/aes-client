@@ -11,7 +11,7 @@ import java.net.Socket;
 public class ReceiveConnectedSocketService extends Service<Socket> {
     private int port;
 
-    public ReceiveConnectedSocketService(int port) {
+    ReceiveConnectedSocketService(int port) {
         this.port = port;
     }
 
@@ -20,10 +20,10 @@ public class ReceiveConnectedSocketService extends Service<Socket> {
         return new Task<Socket>() {
             @Override
             protected Socket call() throws IOException {
-                ServerSocket serverSocket = new ServerSocket(port, 0, InetAddress.getByName("127.0.0.1"));
-                System.out.println("Listening for incoming connections.");
+            ServerSocket serverSocket = new ServerSocket(port, 0, InetAddress.getByName("127.0.0.1"));
+            System.out.println("Listening for incoming connections.");
 
-                return serverSocket.accept();
+            return serverSocket.accept();
             }
         };
     }

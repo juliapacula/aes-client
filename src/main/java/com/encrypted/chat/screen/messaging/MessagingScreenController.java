@@ -15,5 +15,8 @@ public class MessagingScreenController {
 
     void setPresenter(Presenter presenter) {
         this.presenter = presenter;
+        messageList.setMessages(presenter.getStore().getMessages());
+        messageSender.setPresenter(presenter);
+        messageSender.visibleProperty().bind(presenter.getStore().connectedProperty());
     }
 }

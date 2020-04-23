@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RegexValidator;
 import com.jfoenix.validation.RequiredFieldValidator;
 import javafx.fxml.FXML;
+import javafx.stage.Stage;
 
 public class WelcomingScreenController {
     @FXML
@@ -28,6 +29,8 @@ public class WelcomingScreenController {
     public void connectToClient() {
         if (clientIp.validate() && password.validate()) {
             presenter.connectToClient(clientIp.getText());
+            Stage currentStage = (Stage) password.getScene().getWindow();
+            currentStage.close();
         } else if (!clientIp.validate()) {
             clientIp.requestFocus();
         } else {

@@ -3,9 +3,9 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.layout.HBox?>
-<fx:root xmlns:fx="http://javafx.com/fxml/1" type="HBox" xmlns="http://javafx.com/javafx/8.0.999-ea"
-         fx:controller="com.encrypted.chat.message.sender.MessageSenderController">
+<fx:root xmlns:fx="http://javafx.com/fxml/1" type="HBox" xmlns="http://javafx.com/javafx/8.0.999-ea">
     <JFXTextField HBox.hgrow="ALWAYS"/>
     <JFXButton buttonType="RAISED" ripplerFill="WHITE" text="Dodaj załącznik"/>
-    <JFXButton ripplerFill="#0d47a1" style="-fx-background-color: #0d47a1;" text="Wyślij" textFill="WHITE"/>
+    <JFXButton onAction="#sendMessage" ripplerFill="#0d47a1" style="-fx-background-color: #0d47a1;" text="Wyślij"
+               textFill="WHITE"/>
 </fx:root>
