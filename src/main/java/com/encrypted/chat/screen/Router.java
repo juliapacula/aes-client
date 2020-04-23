@@ -24,7 +24,9 @@ public class Router {
         }
 
         messageStage = new Stage();
-        messageStage.setScene(new Scene(new MessagingScreen(presenter), 800, 600));
+        Scene messagingScene = new Scene(new MessagingScreen(presenter), 800, 600);
+        messagingScene.getStylesheets().add(getClass().getResource("/fx-listcell.css").toExternalForm());
+        messageStage.setScene(messagingScene);
         messageStage.show();
     }
 

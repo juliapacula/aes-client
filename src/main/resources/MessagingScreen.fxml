@@ -1,45 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+
 <?import com.encrypted.chat.message.list.MessageList?>
 <?import com.encrypted.chat.message.sender.MessageSender?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.BorderPane?>
-
-<fx:root type="BorderPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.999-ea" fx:controller="com.encrypted.chat.screen.messaging.MessagingScreenController">
+<fx:root xmlns:fx="http://javafx.com/fxml/1" type="BorderPane" xmlns="http://javafx.com/javafx/8.0.999-ea"
+         fx:controller="com.encrypted.chat.screen.messaging.MessagingScreenController">
+    <fx:define>
+        <ToggleGroup fx:id="modeToggleGroup"/>
+    </fx:define>
     <top>
-        <MenuBar style="-fx-background-color: #e3f2fd;">
+        <MenuBar style="-fx-background-color: #EFEFEF;">
             <Menu text="File">
-                <MenuItem text="New" />
-                <MenuItem text="Open" />
-                <MenuItem text="Save" />
-                <MenuItem text="Save As" />
-                <SeparatorMenuItem />
-                <MenuItem text="Exit" />
+                <MenuItem onAction="#exitApplication" text="Exit"/>
             </Menu>
-            <Menu text="Edit">
-                <MenuItem text="Copy" />
-                <MenuItem text="Cut" />
-                <MenuItem text="Paste" />
-            </Menu>
-            <Menu text="Help">
-                <MenuItem disable="true" text="Search" />
-                <MenuItem text="Online Manual" visible="false" />
-                <SeparatorMenuItem />
-                <MenuItem text="About" />
+            <Menu text="Mode">
+                <RadioMenuItem toggleGroup="$modeToggleGroup" text="ECB"/>
+                <RadioMenuItem toggleGroup="$modeToggleGroup" text="CBC"/>
+                <RadioMenuItem toggleGroup="$modeToggleGroup" text="CFB"/>
+                <RadioMenuItem toggleGroup="$modeToggleGroup" text="OFB"/>
             </Menu>
         </MenuBar>
     </top>
     <center>
-        <MessageList fx:id="messageList" />
+        <MessageList fx:id="messageList"/>
     </center>
     <bottom>
         <MessageSender fx:id="messageSender">
             <padding>
-                <Insets bottom="10" left="10" right="10" top="10" />
+                <Insets bottom="10" left="10" right="10" top="10"/>
             </padding>
         </MessageSender>
     </bottom>

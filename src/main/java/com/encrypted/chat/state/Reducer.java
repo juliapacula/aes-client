@@ -1,5 +1,6 @@
-package com.encrypted.chat.screen.state;
+package com.encrypted.chat.state;
 
+import com.encrypted.chat.encryption.EncryptionMode;
 import com.encrypted.chat.message.Message;
 import com.encrypted.chat.message.MessageType;
 
@@ -8,7 +9,6 @@ public class Reducer {
 
     public Reducer(Store store) {
         this.store = store;
-        addSelfMessage("Test!");
     }
 
     public void addSelfMessage(String text) {
@@ -19,6 +19,10 @@ public class Reducer {
     public void addIncomingMessage(String text) {
         Message message = new Message(text, MessageType.INCOMING);
         store.addMessage(message);
+    }
+
+    public void changeEncryptionMode(EncryptionMode mode) {
+        store.setEncryptionMode(mode.toString());
     }
 
     public void connectToClient() {

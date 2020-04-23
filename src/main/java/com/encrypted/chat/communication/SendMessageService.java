@@ -1,5 +1,6 @@
 package com.encrypted.chat.communication;
 
+import com.encrypted.chat.Main;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 
@@ -8,15 +9,11 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class SendMessageService extends Service<Void> {
-    private Socket connectedSocket;
+    private String receiverIp;
     private ExternalMessage messageToSend;
 
-    SendMessageService(Socket socket) {
-        this.connectedSocket = socket;
-    }
-
-    public void setMessageToSend(ExternalMessage message) {
-        messageToSend = message;
+    SendMessageService(String receiverIp) {
+        this.receiverIp = receiverIp;
     }
 
     @Override
@@ -24,9 +21,10 @@ public class SendMessageService extends Service<Void> {
         return new Task<Void>() {
             @Override
             protected Void call() {
-                try {
-                    ObjectOutputStream out = new ObjectOutputStream(connectedSocket.getOutputStream());
-
+                try (
+                    Socket socket = new Socket(receiverIp, Main.isDev ? 4040 : 1234);
+                    ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+                ) {
                     if (messageToSend != null) {
                         System.out.println("Sent a message.");
                         out.writeObject(messageToSend);
@@ -34,8 +32,13 @@ public class SendMessageService extends Service<Void> {
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
+
                 return null;
             }
         };
+    }
+
+    void setMessageToSend(ExternalMessage message) {
+        messageToSend = message;
     }
 }
