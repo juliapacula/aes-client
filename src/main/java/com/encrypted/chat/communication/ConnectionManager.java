@@ -1,9 +1,6 @@
 package com.encrypted.chat.communication;
 
-import com.encrypted.chat.encryption.EncryptionMode;
-import com.encrypted.chat.encryption.KeyGenerator;
-import com.encrypted.chat.encryption.RSA;
-import com.encrypted.chat.encryption.RsaKeyGetter;
+import com.encrypted.chat.encryption.*;
 import com.encrypted.chat.state.Reducer;
 import com.encrypted.chat.state.SessionStore;
 import javafx.beans.property.ReadOnlyDoubleProperty;
@@ -34,7 +31,12 @@ public class ConnectionManager {
 
     public void listenForMessages() {
         if (receiveMessageService == null) {
-            receiveMessageService = new ReceiveMessageService();
+            receiveMessageService = new ReceiveMessageService(((iv) -> AES.decryptCipher(store.getDecryptionSessionKey(),
+                    store.getEncryptionMode(),
+                    IvSpecProvider.getInitialVector(iv))),
+                    (input, iv) -> AES.decrypt(input, store.getDecryptionSessionKey(),
+                            store.getEncryptionMode(),
+                            IvSpecProvider.getInitialVector(iv)));
         }
 
         receiveMessageService.setOnSucceeded(event -> {

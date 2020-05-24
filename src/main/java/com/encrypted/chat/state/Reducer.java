@@ -70,18 +70,18 @@ public class Reducer implements SessionReducer {
     }
 
     public void addIncomingFileMessage(ExternalFileMessage externalFileMessage) {
-        byte[] decryptedFileName = AES.decrypt(externalFileMessage.fileName,
-                store.getDecryptionSessionKey(),
-                store.getEncryptionMode(),
-                IvSpecProvider.getInitialVector(externalFileMessage.iv));
+        byte[] decryptedFileName = externalFileMessage.fileName;
 
-        byte[] decryptedFileContent = AES.decrypt(externalFileMessage.content,
-                store.getDecryptionSessionKey(),
-                store.getEncryptionMode(),
-                IvSpecProvider.getInitialVector(externalFileMessage.iv));
+        byte[] decryptedFileContent = externalFileMessage.content;
+
+        if (decryptedFileContent == null || decryptedFileName == null) {
+            System.out.println("Could not decrypt file.");
+            return;
+        }
 
         String fileName = new String(decryptedFileName);
-        File fileSaved = new File(System.getProperty("user.dir") + File.separator + "testki" + File.separator + fileName);
+        File fileSaved = new File(System.getProperty("user.dir") + File.separator + fileName);
+
         try {
             fileSaved.createNewFile();
             FileOutputStream fos = new FileOutputStream(fileSaved);

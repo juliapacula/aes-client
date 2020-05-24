@@ -6,6 +6,7 @@ import com.encrypted.chat.encryption.EncryptionMode;
 import com.encrypted.chat.encryption.IvSpecProvider;
 import javafx.concurrent.Task;
 
+import javax.crypto.CipherOutputStream;
 import javax.crypto.spec.IvParameterSpec;
 import java.io.*;
 import java.net.Socket;
@@ -40,16 +41,21 @@ public class SendFileTask extends Task<Void> {
                 outObject.flush();
                 outObject.reset();
 
+                CipherOutputStream cipherOutputStream = new CipherOutputStream(outObject, AES.encryptCipher(key, mode, iv));
+
                 InputStream in = new FileInputStream(fileToSend);
                 long totalSize = fileToSend.length();
                 long doneSize = 0;
                 int count;
-                byte[] buffer = new byte[4096];
+                byte[] buffer = new byte[512];
                 while ((count = in.read(buffer)) > 0) {
-                    doneSize += 4096;
+                    doneSize += count;
                     updateProgress(doneSize, totalSize);
-                    outObject.write(AES.encrypt(buffer, key, mode, iv), 0, count);
+                    cipherOutputStream.write(buffer, 0, count);
                 }
+
+                in.close();
+                cipherOutputStream.close();
             }
         } catch (IOException ex) {
             ex.printStackTrace();
