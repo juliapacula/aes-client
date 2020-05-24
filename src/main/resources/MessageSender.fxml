@@ -2,10 +2,13 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
-<fx:root xmlns:fx="http://javafx.com/fxml/1" style="-fx-background-color: #EFEFEF;" type="HBox" xmlns="http://javafx.com/javafx/8.0.999-ea">
-    <JFXTextField fx:id="textMessage" HBox.hgrow="ALWAYS"/>
-    <JFXButton buttonType="RAISED" ripplerFill="WHITE" text="Attach"/>
-    <JFXButton fx:id="sendButton" onAction="#sendMessage" ripplerFill="#0d47a1" style="-fx-background-color: #0d47a1;" text="Send"
-               textFill="WHITE"/>
+<fx:root xmlns:fx="http://javafx.com/fxml/1" style="-fx-background-color: #EFEFEF;" type="VBox" xmlns="http://javafx.com/javafx/8.0.999-ea">
+    <HBox>
+        <JFXTextField fx:id="textMessage" HBox.hgrow="ALWAYS"/>
+        <JFXButton onAction="#pickFile" buttonType="RAISED" ripplerFill="WHITE" text="Attach"/>
+        <JFXButton fx:id="sendButton" onAction="#sendMessage" ripplerFill="#0d47a1" style="-fx-background-color: #0d47a1;" text="Send"
+                   textFill="WHITE"/>
+    </HBox>
 </fx:root>

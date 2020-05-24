@@ -23,7 +23,7 @@ public class WelcomingScreen extends GridPane {
             WelcomingScreenController controller = loader.getController();
             controller.setPresenter(presenter);
         } catch (IOException ex) {
-            System.out.println(ex.toString());
+            ex.printStackTrace();
         }
     }
 }

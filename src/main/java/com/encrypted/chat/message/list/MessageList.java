@@ -1,9 +1,7 @@
 package com.encrypted.chat.message.list;
 
 import com.encrypted.chat.message.Message;
-import com.encrypted.chat.message.MessageType;
 import com.encrypted.chat.message.list.item.MessageListItemFactory;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -39,7 +37,7 @@ public class MessageList extends ListView<Message> {
         try {
             loader.load();
         } catch (IOException ex) {
-            System.out.println(ex.toString());
+            ex.printStackTrace();
         }
     }
 }

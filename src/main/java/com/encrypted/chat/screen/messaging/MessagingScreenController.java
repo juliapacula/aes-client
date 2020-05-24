@@ -4,7 +4,6 @@ import com.encrypted.chat.encryption.EncryptionMode;
 import com.encrypted.chat.message.list.MessageList;
 import com.encrypted.chat.message.sender.MessageSender;
 import com.encrypted.chat.screen.Presenter;
-import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.Toggle;
@@ -36,17 +35,35 @@ public class MessagingScreenController {
     }
 
     private void setupToggleGroup() {
-        modeToggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                RadioMenuItem selectedItem = (RadioMenuItem) newValue;
-                EncryptionMode mode = EncryptionMode.valueOf(selectedItem.getText());
-                presenter.getReducer().changeEncryptionMode(mode);
-            }
-        });
+        modeToggleGroup.selectedToggleProperty()
+                .addListener((observable, oldValue, newValue) -> {
+                    if (newValue != null) {
+                        RadioMenuItem selectedItem = (RadioMenuItem) newValue;
+                        EncryptionMode mode = EncryptionMode.valueOf(selectedItem.getText());
+                        presenter.changeEncryptionMode(mode);
+                    }
+                });
 
-        FilteredList<Toggle> toSelect = modeToggleGroup
-            .getToggles()
-            .filtered((toggle -> ((RadioMenuItem) toggle).getText().equals(presenter.getStore().getEncryptionMode())));
-        toSelect.get(0).setSelected(true);
+        presenter.getStore().encryptionModeProperty()
+                .addListener((observable, oldValue, newValue) -> {
+                    Toggle toggleToDeselect = getSelectedToggle(oldValue);
+                    Toggle toggleToSelect = getSelectedToggle(newValue);
+                    toggleToDeselect.setSelected(false);
+                    toggleToSelect.setSelected(true);
+                });
+
+        Toggle toggleToSelect = getSelectedToggle(presenter.getStore().getEncryptionMode().toString());
+        toggleToSelect.setSelected(true);
+    }
+
+    private Toggle getSelectedToggle(String selectedValue) {
+        return modeToggleGroup
+                .getToggles()
+                .filtered((toggle) -> isToggleSelected(toggle, selectedValue))
+                .get(0);
+    }
+
+    private boolean isToggleSelected(Toggle toggle, String selectedValue) {
+        return ((RadioMenuItem) toggle).getText().equals(selectedValue);
     }
 }

@@ -1,44 +1,101 @@
 package com.encrypted.chat.communication;
 
-import com.encrypted.chat.screen.Router;
+import com.encrypted.chat.encryption.EncryptionMode;
+import com.encrypted.chat.encryption.KeyGenerator;
+import com.encrypted.chat.encryption.RSA;
+import com.encrypted.chat.encryption.RsaKeyGetter;
 import com.encrypted.chat.state.Reducer;
+import com.encrypted.chat.state.SessionStore;
+import javafx.beans.property.ReadOnlyDoubleProperty;
+
+import java.io.File;
+import java.security.KeyPair;
 
 public class ConnectionManager {
-    private Reducer reducer;
-    private Router router;
-    private String ipToSend;
+    private final Reducer reducer;
+    private final SessionStore store;
+    public String ipToSend;
     private ReceiveMessageService receiveMessageService;
 
-    public ConnectionManager(Reducer reducer, Router router) {
+    public ConnectionManager(Reducer reducer, SessionStore store) {
         this.reducer = reducer;
-        this.router = router;
+        this.store = store;
     }
 
-    public void connectToClient(String ip) {
+    public void connectToClient(String ip, String userPassword) {
         ipToSend = ip;
         reducer.connectToClient();
-        router.showMessagingScreen();
+
+        KeyPair rsaKeys = RsaKeyGetter.getKeys(userPassword);
+        sendMessage(new ExternalMessage(ExternalMessageType.PUBLIC_KEY, rsaKeys.getPublic().getEncoded()));
+        reducer.setSelfPrivateKey(rsaKeys.getPrivate());
     }
 
 
-    public void listenForMessages(Reducer reducer) {
+    public void listenForMessages() {
         if (receiveMessageService == null) {
             receiveMessageService = new ReceiveMessageService();
         }
 
         receiveMessageService.setOnSucceeded(event -> {
             ExternalMessage message = (ExternalMessage) event.getSource().getValue();
-            String messageText = new String(message.content);
-            System.out.println(messageText);
-            reducer.addIncomingMessage(messageText);
+            reactToMessage(message);
         });
 
         receiveMessageService.start();
     }
 
-    public void sendMessage(ExternalMessage message) {
-        SendMessageService sendMessageService = new SendMessageService(ipToSend);
-        sendMessageService.setMessageToSend(message);
-        sendMessageService.start();
+    public ReadOnlyDoubleProperty sendMessage(ExternalMessage message) {
+        SendMessageTask sendMessageTask = new SendMessageTask(ipToSend, message);
+        Thread thread = new Thread(sendMessageTask);
+        thread.setDaemon(true);
+        thread.start();
+
+        return sendMessageTask.progressProperty();
+    }
+
+    public ReadOnlyDoubleProperty sendFile(File fileToSend) {
+        SendFileTask task = new SendFileTask(
+                ipToSend,
+                fileToSend,
+                store.getEncryptionSessionKey(),
+                store.getEncryptionMode()
+        );
+        Thread thread = new Thread(task);
+        thread.setDaemon(true);
+        thread.start();
+
+        return task.progressProperty();
+    }
+
+    private void reactToMessage(ExternalMessage message) {
+        switch (message.type) {
+            case TEXT_MESSAGE:
+                reducer.addIncomingMessage(message);
+                break;
+            case ENCRYPTION_TYPE:
+                EncryptionMode mode = EncryptionMode.valueOf(new String(message.content));
+                reducer.changeEncryptionMode(mode);
+                break;
+            case PUBLIC_KEY:
+                System.out.println("Received RSA Public key.");
+                reducer.setReceivedPublicKey(message.content);
+
+                byte[] sessionKey = KeyGenerator.getSessionKey();
+                reducer.setEncryptionSessionKey(sessionKey);
+                byte[] encryptedSessionKey = RSA.encrypt(sessionKey, store.getReceivedPublicKey());
+                sendMessage(new ExternalMessage(ExternalMessageType.SESSION_KEY, encryptedSessionKey));
+                break;
+            case SESSION_KEY:
+                System.out.println("Received Session key.");
+                byte[] decryptedSessionKey = RSA.decrypt(message.content, store.getSelfPrivateKey());
+                reducer.setDecryptionSessionKey(decryptedSessionKey);
+                break;
+            case FILE_MESSAGE:
+                reducer.addIncomingFileMessage((ExternalFileMessage) message);
+                break;
+            default:
+                break;
+        }
     }
 }

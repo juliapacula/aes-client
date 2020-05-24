@@ -1,14 +1,13 @@
 package com.encrypted.chat.message.list.item;
 
 import com.encrypted.chat.message.Message;
+import com.encrypted.chat.message.MessageOwner;
 import com.encrypted.chat.message.MessageType;
+import javafx.application.HostServices;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class MessageListItemController {
     @FXML
@@ -20,16 +19,16 @@ public class MessageListItemController {
 
     public void setMessage(Message message) {
         messageBox.setVisible(true);
-        messageBox.setAlignment(getMessagePosition(message.type));
+        messageBox.setAlignment(getMessagePosition(message.owner));
         messageText.setText(message.message);
-        messageText.setAlignment(getMessagePosition(message.type));
-        messageText.setStyle("-fx-background-radius: 5; -fx-background-color: " + getColor(message.type));
+        messageText.setAlignment(getMessagePosition(message.owner));
+        messageText.setStyle("-fx-background-radius: 5; -fx-background-color: " + getColor(message.owner));
         messageTimestamp.setText(message.timestamp);
     }
 
-    private Pos getMessagePosition(MessageType type) {
+    private Pos getMessagePosition(MessageOwner type) {
         switch (type) {
-            case OWNER:
+            case SELF:
                 return Pos.CENTER_RIGHT;
             case INCOMING:
             default:
@@ -37,9 +36,9 @@ public class MessageListItemController {
         }
     }
 
-    private String getColor(MessageType type) {
+    private String getColor(MessageOwner type) {
         switch (type) {
-            case OWNER:
+            case SELF:
                 return "#dedede";
             case INCOMING:
             default:

@@ -28,7 +28,7 @@ public class WelcomingScreenController {
     @FXML
     public void connectToClient() {
         if (clientIp.validate() && password.validate()) {
-            presenter.connectToClient(clientIp.getText());
+            presenter.connectToClient(clientIp.getText(), password.getText());
             Stage currentStage = (Stage) password.getScene().getWindow();
             currentStage.close();
         } else if (!clientIp.validate()) {

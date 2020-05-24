@@ -9,10 +9,18 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class Store {
-    private ObservableList<Message> messages;
-    private BooleanProperty connected = new SimpleBooleanProperty(false);
-    private StringProperty encryptionMode = new SimpleStringProperty(EncryptionMode.ECB.toString());
+import java.security.PrivateKey;
+import java.security.PublicKey;
+
+public class Store implements SessionStore {
+    private final ObservableList<Message> messages;
+    private final BooleanProperty connected = new SimpleBooleanProperty(false);
+    private final StringProperty encryptionMode = new SimpleStringProperty(EncryptionMode.ECB.toString());
+
+    protected byte[] encryptionSessionKey;
+    protected byte[] decryptionSessionKey;
+    protected PublicKey receivedPublicKey;
+    protected PrivateKey selfPrivateKey;
 
     public Store() {
         messages = FXCollections.observableArrayList();
@@ -34,8 +42,8 @@ public class Store {
         return encryptionMode;
     }
 
-    public String getEncryptionMode() {
-        return encryptionMode.get();
+    public EncryptionMode getEncryptionMode() {
+        return EncryptionMode.valueOf(encryptionMode.get());
     }
 
     public void setEncryptionMode(String encryptionMode) {
@@ -50,4 +58,19 @@ public class Store {
         this.connected.set(true);
     }
 
+    public byte[] getDecryptionSessionKey() {
+        return decryptionSessionKey;
+    }
+
+    public byte[] getEncryptionSessionKey() {
+        return encryptionSessionKey;
+    }
+
+    public PublicKey getReceivedPublicKey() {
+        return receivedPublicKey;
+    }
+
+    public PrivateKey getSelfPrivateKey() {
+        return selfPrivateKey;
+    }
 }

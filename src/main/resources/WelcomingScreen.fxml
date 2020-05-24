@@ -16,7 +16,7 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
         </padding>
         <font>
-            <Font name="Roboto Regular" size="14.0" />
+            <Font name="Roboto" size="14.0" />
         </font>
     </Label>
     <JFXTextField fx:id="password" labelFloat="true" promptText="Password" GridPane.columnSpan="2" GridPane.rowIndex="1">
@@ -29,7 +29,7 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
         </padding>
         <font>
-            <Font name="Roboto Regular" size="14.0" />
+            <Font name="Roboto" size="14.0" />
         </font>
     </Label>
     <JFXTextField fx:id="clientIp" labelFloat="true" promptText="IP" GridPane.columnSpan="2" GridPane.rowIndex="3">
