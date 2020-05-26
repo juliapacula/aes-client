@@ -11,7 +11,7 @@ public class KeyGenerator {
 
             return keyPairGenerator.generateKeyPair();
         } catch (NoSuchAlgorithmException | NoSuchProviderException e) {
-            e.printStackTrace();
+            System.out.println(e.toString());
             return null;
         }
     }

@@ -37,7 +37,7 @@ public class MessageList extends ListView<Message> {
         try {
             loader.load();
         } catch (IOException ex) {
-            ex.printStackTrace();
+            System.out.println(ex.toString());
         }
     }
 }

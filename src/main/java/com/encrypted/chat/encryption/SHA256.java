@@ -10,7 +10,7 @@ public class SHA256 {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             return digest.digest(text.getBytes(StandardCharsets.UTF_8));
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            System.out.println(e.toString());
             return null;
         }
     }

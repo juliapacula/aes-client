@@ -23,7 +23,7 @@ public class MessagingScreen extends BorderPane {
             MessagingScreenController controller = loader.getController();
             controller.setPresenter(presenter);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            System.out.println(ex.toString());
         }
     }
 }

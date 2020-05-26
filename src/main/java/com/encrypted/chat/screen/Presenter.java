@@ -1,10 +1,11 @@
 package com.encrypted.chat.screen;
 
-import com.encrypted.chat.communication.*;
+import com.encrypted.chat.communication.ConnectionManager;
+import com.encrypted.chat.communication.ExternalMessage;
+import com.encrypted.chat.communication.ExternalMessageType;
 import com.encrypted.chat.encryption.AES;
 import com.encrypted.chat.encryption.EncryptionMode;
 import com.encrypted.chat.encryption.IvSpecProvider;
-import com.encrypted.chat.encryption.RsaKeyGetter;
 import com.encrypted.chat.state.Reducer;
 import com.encrypted.chat.state.Store;
 import javafx.application.Platform;
@@ -12,7 +13,6 @@ import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.security.KeyPair;
 
 public class Presenter {
     private final ConnectionManager connectionManager;
@@ -25,7 +25,6 @@ public class Presenter {
         store = new Store();
         reducer = new Reducer(store);
         connectionManager = new ConnectionManager(reducer, store);
-
         initialActions();
     }
 

@@ -12,20 +12,14 @@ public class RSA {
 
             return cipher.doFinal(input);
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            return input;
         }
     }
 
-    public static byte[] decrypt(byte[] input, PrivateKey privateKey) {
-        try {
-            Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-            cipher.init(Cipher.DECRYPT_MODE, privateKey);
+    public static byte[] decrypt(byte[] input, PrivateKey privateKey) throws Exception {
+        Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+        cipher.init(Cipher.DECRYPT_MODE, privateKey);
 
-            return cipher.doFinal(input);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        return cipher.doFinal(input);
     }
 }

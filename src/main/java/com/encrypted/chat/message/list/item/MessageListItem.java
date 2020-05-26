@@ -30,7 +30,7 @@ public class MessageListItem extends ListCell<Message> {
             loader.load();
             controller = loader.getController();
         } catch (IOException ex) {
-            ex.printStackTrace();
+            System.out.println(ex.toString());
         }
     }
 }

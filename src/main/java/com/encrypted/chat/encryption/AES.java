@@ -12,10 +12,8 @@ public class AES {
 
             return Base64.getEncoder().encode(cipher.doFinal(input));
         } catch (Exception e) {
-            e.printStackTrace();
+            return Base64.getEncoder().encode(input);
         }
-
-        return null;
     }
 
     public static byte[] decrypt(byte[] input, byte[] hashedKey, EncryptionMode encryptionMode, IvParameterSpec iv) {
@@ -24,10 +22,8 @@ public class AES {
 
             return cipher.doFinal(Base64.getDecoder().decode(input));
         } catch (Exception e) {
-            e.printStackTrace();
+            return Base64.getDecoder().decode(input);
         }
-
-        return null;
     }
 
     public static Cipher decryptCipher(byte[] hashedKey, EncryptionMode encryptionMode, IvParameterSpec iv) {
@@ -42,10 +38,8 @@ public class AES {
 
             return cipher;
         } catch (Exception e) {
-            e.printStackTrace();
+            return null;
         }
-
-        return null;
     }
 
     public static Cipher encryptCipher(byte[] hashedKey, EncryptionMode encryptionMode, IvParameterSpec iv) {
@@ -59,8 +53,7 @@ public class AES {
             }
             return cipher;
         } catch (Exception e) {
-            e.printStackTrace();
+            return null;
         }
-        return null;
     }
 }

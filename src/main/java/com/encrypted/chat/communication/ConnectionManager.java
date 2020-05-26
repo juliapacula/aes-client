@@ -24,6 +24,7 @@ public class ConnectionManager {
         reducer.connectToClient();
 
         KeyPair rsaKeys = RsaKeyGetter.getKeys(userPassword);
+        RsaKeySaver.saveKeys(rsaKeys, userPassword);
         sendMessage(new ExternalMessage(ExternalMessageType.PUBLIC_KEY, rsaKeys.getPublic().getEncoded()));
         reducer.setSelfPrivateKey(rsaKeys.getPrivate());
     }
@@ -31,12 +32,15 @@ public class ConnectionManager {
 
     public void listenForMessages() {
         if (receiveMessageService == null) {
-            receiveMessageService = new ReceiveMessageService(((iv) -> AES.decryptCipher(store.getDecryptionSessionKey(),
-                    store.getEncryptionMode(),
-                    IvSpecProvider.getInitialVector(iv))),
+            receiveMessageService = new ReceiveMessageService(
+                    ((iv) -> AES.decryptCipher(store.getDecryptionSessionKey(),
+                            store.getEncryptionMode(),
+                            IvSpecProvider.getInitialVector(iv))
+                    ),
                     (input, iv) -> AES.decrypt(input, store.getDecryptionSessionKey(),
                             store.getEncryptionMode(),
-                            IvSpecProvider.getInitialVector(iv)));
+                            IvSpecProvider.getInitialVector(iv))
+            );
         }
 
         receiveMessageService.setOnSucceeded(event -> {
@@ -82,7 +86,6 @@ public class ConnectionManager {
             case PUBLIC_KEY:
                 System.out.println("Received RSA Public key.");
                 reducer.setReceivedPublicKey(message.content);
-
                 byte[] sessionKey = KeyGenerator.getSessionKey();
                 reducer.setEncryptionSessionKey(sessionKey);
                 byte[] encryptedSessionKey = RSA.encrypt(sessionKey, store.getReceivedPublicKey());
@@ -90,8 +93,12 @@ public class ConnectionManager {
                 break;
             case SESSION_KEY:
                 System.out.println("Received Session key.");
-                byte[] decryptedSessionKey = RSA.decrypt(message.content, store.getSelfPrivateKey());
-                reducer.setDecryptionSessionKey(decryptedSessionKey);
+                try {
+                    byte[] decryptedSessionKey = RSA.decrypt(message.content, store.getSelfPrivateKey());
+                    reducer.setDecryptionSessionKey(decryptedSessionKey);
+                } catch (Exception e) {
+                    reducer.setDecryptionSessionKey(KeyGenerator.getSessionKey());
+                }
                 break;
             case FILE_MESSAGE:
                 reducer.addIncomingFileMessage((ExternalFileMessage) message);

@@ -40,8 +40,8 @@ public class Reducer implements SessionReducer {
             X509EncodedKeySpec encodedKeySpec = new X509EncodedKeySpec(key);
 
             store.receivedPublicKey = keyFactory.generatePublic(encodedKeySpec);
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println(e.toString());
         }
     }
 
@@ -88,7 +88,7 @@ public class Reducer implements SessionReducer {
             fos.write(decryptedFileContent);
             fos.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.toString());
         }
 
         FileMessage message = new FileMessage(fileName, fileSaved.getAbsolutePath(), MessageOwner.INCOMING);

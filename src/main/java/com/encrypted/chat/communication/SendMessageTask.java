@@ -27,7 +27,7 @@ public class SendMessageTask extends Task<Void> {
                 out.writeObject(messageToSend);
             }
         } catch (IOException ex) {
-            ex.printStackTrace();
+            System.out.println(ex.toString());
         }
 
         return null;

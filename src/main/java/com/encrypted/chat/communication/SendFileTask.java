@@ -26,6 +26,7 @@ public class SendFileTask extends Task<Void> {
 
     @Override
     protected Void call() {
+        long startTime = System.nanoTime();
         try (
                 Socket socket = new Socket(receiverIp, Main.isDev ? 4040 : 1234);
                 ObjectOutputStream outObject = new ObjectOutputStream(socket.getOutputStream());
@@ -58,8 +59,11 @@ public class SendFileTask extends Task<Void> {
                 cipherOutputStream.close();
             }
         } catch (IOException ex) {
-            ex.printStackTrace();
+            System.out.println(ex.toString());
         }
+
+        long endTime = System.nanoTime();
+        System.out.println("Sending file took " + Math.floor((endTime - startTime) / 1000000.0) + "ms.");
 
         return null;
     }
