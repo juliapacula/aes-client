@@ -17,8 +17,8 @@ public class Store implements SessionStore {
     private final BooleanProperty connected = new SimpleBooleanProperty(false);
     private final StringProperty encryptionMode = new SimpleStringProperty(EncryptionMode.ECB.toString());
 
-    protected byte[] encryptionSessionKey;
-    protected byte[] decryptionSessionKey;
+    protected byte[] encryptionSessionKey = null;
+    protected byte[] decryptionSessionKey = null;
     protected PublicKey receivedPublicKey;
     protected PrivateKey selfPrivateKey;
 

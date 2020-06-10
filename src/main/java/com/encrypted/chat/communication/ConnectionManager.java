@@ -27,6 +27,7 @@ public class ConnectionManager {
         RsaKeySaver.saveKeys(rsaKeys, userPassword);
         sendMessage(new ExternalMessage(ExternalMessageType.PUBLIC_KEY, rsaKeys.getPublic().getEncoded()));
         reducer.setSelfPrivateKey(rsaKeys.getPrivate());
+        sendSessionKey();
     }
 
 
@@ -86,10 +87,7 @@ public class ConnectionManager {
             case PUBLIC_KEY:
                 System.out.println("Received RSA Public key.");
                 reducer.setReceivedPublicKey(message.content);
-                byte[] sessionKey = KeyGenerator.getSessionKey();
-                reducer.setEncryptionSessionKey(sessionKey);
-                byte[] encryptedSessionKey = RSA.encrypt(sessionKey, store.getReceivedPublicKey());
-                sendMessage(new ExternalMessage(ExternalMessageType.SESSION_KEY, encryptedSessionKey));
+                sendSessionKey();
                 break;
             case SESSION_KEY:
                 System.out.println("Received Session key.");
@@ -105,6 +103,15 @@ public class ConnectionManager {
                 break;
             default:
                 break;
+        }
+    }
+
+    private void sendSessionKey() {
+        if (store.getSelfPrivateKey() != null && store.getReceivedPublicKey() != null) {
+            byte[] sessionKey = KeyGenerator.getSessionKey();
+            reducer.setEncryptionSessionKey(sessionKey);
+            byte[] encryptedSessionKey = RSA.encrypt(sessionKey, store.getReceivedPublicKey());
+            sendMessage(new ExternalMessage(ExternalMessageType.SESSION_KEY, encryptedSessionKey));
         }
     }
 }

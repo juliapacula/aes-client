@@ -19,7 +19,7 @@ public class SendMessageTask extends Task<Void> {
     @Override
     protected Void call() {
         try (
-                Socket socket = new Socket(receiverIp, Main.isDev ? 4040 : 1234);
+                Socket socket = new Socket(receiverIp, 8005);
                 ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
         ) {
             if (messageToSend != null) {

@@ -9,11 +9,8 @@ import javafx.util.Duration;
 
 import javax.crypto.CipherInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.*;
 
 public class ReceiveMessageService extends ScheduledService<ExternalMessage> {
     private final ReturnDecrypt returnDecrypt;
@@ -32,9 +29,10 @@ public class ReceiveMessageService extends ScheduledService<ExternalMessage> {
             @Override
             protected ExternalMessage call() {
                 ExternalMessage message = null;
+                System.out.println("Started listening.");
 
                 try (
-                        ServerSocket serverSocket = new ServerSocket(Main.isDev ? 1234 : 4040, 0, InetAddress.getByName("127.0.0.1"));
+                        ServerSocket serverSocket = new ServerSocket(8005, 0, InetAddress.getByName(Main.localIpAddress));
                         Socket connectedSocket = serverSocket.accept();
                         ObjectInputStream in = new ObjectInputStream(connectedSocket.getInputStream());
                 ) {

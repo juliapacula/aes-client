@@ -28,7 +28,7 @@ public class SendFileTask extends Task<Void> {
     protected Void call() {
         long startTime = System.nanoTime();
         try (
-                Socket socket = new Socket(receiverIp, Main.isDev ? 4040 : 1234);
+                Socket socket = new Socket(receiverIp,8005);
                 ObjectOutputStream outObject = new ObjectOutputStream(socket.getOutputStream());
         ) {
             if (fileToSend != null) {
